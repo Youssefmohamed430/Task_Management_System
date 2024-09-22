@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Task_Management_System
 {
-    internal class Program
+    internal class Employee
     {
-        static void Main(string[] args)
-        {
-            
-        }
+        private List<string> Name;
     }
 }
