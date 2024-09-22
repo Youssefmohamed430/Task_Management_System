@@ -10,8 +10,7 @@ namespace Task_Management_System
     {
         static void Main(string[] args)
         {
-            Form1 form = new Form1();
-            form.ShowDialog();
+            Console.WriteLine("ijfdi");
         }
     }
 }
