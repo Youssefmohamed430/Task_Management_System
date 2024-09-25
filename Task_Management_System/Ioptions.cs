@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Task_Management_System
 {
-    internal class Program
+    internal class Ioptions 
+     // Apply Dependency Inversion Principle
     {
-        static void Main(string[] args)
+        protected DisplayEmployee empl;
+        public Ioptions()
         {
-            var display1 = new Display();
-            display1.Options();
+            empl = new DisplayEmployee();
         }
     }
 }

@@ -3,42 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Task_Management_System
 {
-    public class Employee
+    public class Employee 
     {
-        //-----------------------ID--Name------------------------                
-        private SortedDictionary<int,string> employees;
-        //-----------------------ID--List_of_tasks--------------                
-        private SortedDictionary<int,List<string>> EmployeesTasks;
-        //-----------------------ID--List_of_projects--------------                
-        private SortedDictionary<int,List<string>> EmployeesProjects;
-        public SortedDictionary<int, string> _employees {  get; set; }
-        public SortedDictionary<int, List<string>> _EmployeesTasks {  get; set; } 
-        public SortedDictionary<int, List<string>> _EmployeesProjects {  get; set; } 
-        public void Add_Employee(string _name,int _id)
+        public RepositryEmployee repo;
+        private int ID;
+        private string Name;
+        public int _ID {  get; set; }
+        public string _Name{  get; set; }
+
+        public Employee() => repo = new RepositryEmployee();   
+
+        public void Add_Employee(string _name, int _id) => repo._employees.Add(new Employee { _ID = _id , _Name = _name});
+        public void Remove_Employee(int _id) => repo._employees.Remove(this.search_employee(_id));
+
+        public Employee search_employee(int _id)
         {
-            RepositryEmployee Repo = new RepositryEmployee();
-            Repo.employee.employees.Add(_id, _name);
-        }   
-        public void Remove_Employee(int _id)
-        {
-            RepositryEmployee Repo = new RepositryEmployee();
-            Repo.employee.employees.Remove(_id);
-        }
-        public void Search_Employee(int _id)
-        {
-            RepositryEmployee Repo = new RepositryEmployee();
-             // LINQ =>  select
-            var emp = Repo.LoadEmployees().Select(x => x.Key).ToList();
-            int l = 0,r=(emp.Count())-1,mid;
-            while(l <= r)
+            RepositryEmployee repo = new RepositryEmployee();
+            // linq =>  select
+            var emp = repo._employees;
+            int l = 0, r = (emp.Count) - 1, mid;
+            // Binary Search
+            while (l <= r)
             {
                 mid = (l + r) / 2;
-                if (emp[mid] == _id) ; // Not Done
-                
+                if (emp[mid].ID == _id)
+                    return emp[mid];
+                else if (emp[mid].ID > _id)
+                    r = mid - 1;
+                else 
+                    l = mid + 1;
             }
+            throw new Exception($"This employee {_id} is not found");
         }
     }
 }

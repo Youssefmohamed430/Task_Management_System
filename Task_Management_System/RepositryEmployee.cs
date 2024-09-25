@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Task_Management_System
 {
     public class RepositryEmployee
     {
-        public Employee employee;
-        public RepositryEmployee() {
-            employee = new Employee();
-            employee._employees = new SortedDictionary<int, string>
-            {
-                {101, "Ahmed"},{102, "Sara"},{103, "John"},
-                {104, "Laila"},{105, "Omar"},{106, "Mona"},
-                {107, "Khaled"},{108, "Zainab"},{109, "Youssef"},
-                {110, "Fatma"},{111, "Mahmoud"},{112, "Nour"},
-                {113, "Ali"},{114, "Aisha"},{115, "Mustafa"},
-                {116, "Salma"},{117, "Tamer"},{118, "Hassan"},
-                {119, "Nadia"},{120, "Rami"}
-            };
-            employee._EmployeesTasks = new SortedDictionary<int, List<string>>();    
-            employee._EmployeesProjects = new SortedDictionary<int, List<string>>();    
-        }
-        public SortedDictionary<int, string> LoadEmployees() => employee._employees;
-        public SortedDictionary<int, List<string>> LoadEmployeesTasks() => employee._EmployeesTasks;
-        public SortedDictionary<int, List<string>> LoadEmployeesProjects() => employee._EmployeesProjects;
+        private List<Employee> employees;
+        public List<Employee> _employees { get; set; }
+        public List<Employee> LoadEmployees() => _employees = new List<Employee>
+        {
+            new Employee{_ID = 101, _Name = "Ahmed"},
+            new Employee{_ID = 102, _Name = "Sara"},
+            new Employee{_ID = 103, _Name = "John"},
+            new Employee{_ID = 104, _Name = "Laila"},
+            new Employee{_ID = 105, _Name = "Omar"},
+            new Employee{_ID = 106, _Name = "Mona"},
+            new Employee{_ID = 107, _Name = "Khaled"},
+            new Employee{_ID = 108, _Name = "Zainab"},
+            new Employee{_ID = 109, _Name = "Youssef"},
+            new Employee{_ID = 110, _Name = "Fatma"}
+        };
+
     }
 }
