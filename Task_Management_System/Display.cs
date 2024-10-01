@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task_Management_System
 {
-    internal  class Display : Ioptions
+    public abstract class Display
     {
         protected Employee emp;
         protected Task task;
@@ -15,19 +15,6 @@ namespace Task_Management_System
             emp = new Employee();
             task = new Task();
         }
-        public void Options()
-        {
-            Console.WriteLine("Enter Your Options : ");
-            Console.WriteLine("1.Employee Department|| 2.Tasks Department");
-            string op = Console.ReadLine();
-            if (op == "1")
-            {
-                empl.display();
-            }
-            //else if (op == "2")
-            //{
-            //}
-            else Console.WriteLine("Invalid Answer");
-        }
+        public abstract void display();
     }
 }

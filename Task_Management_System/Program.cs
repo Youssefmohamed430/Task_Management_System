@@ -8,10 +8,15 @@ namespace Task_Management_System
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var display1 = new Display();
-            display1.Options();
+            Employee employee = new Employee();
+            Task tasks =new Task();
+            tasks.repo.LoadTasks();
+            employee.repo.LoadEmployees();
+            Ioptions options = Ioptions.GetInstanceoption();
+            var opt = options.Options();
+            opt.display();
         }
     }
 }

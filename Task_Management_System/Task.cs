@@ -23,10 +23,10 @@ namespace Task_Management_System
         public int no_task { get; set; }
 
         public Task()
-        {
-            this.no_task = 0;
+        { 
+            this.no_task = 0 ;
             this._Created = DateTime.Now;
-            repo = new RepositryTasks();
+            repo = RepositryTasks.GetInstanceRepoTask();
         }
         public void Assign_Task(int _id, string _title, string _description, Status _status)
         {
@@ -47,6 +47,10 @@ namespace Task_Management_System
         {
             var temp = repo.LoadTasks()[_id][no_task];
             repo._tasks[_id].Remove(temp);
+        }
+        public void UpdateTaskStatus()
+        {
+
         }
     }
 }
