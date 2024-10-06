@@ -50,12 +50,14 @@
   <ItemGroup>
     <Compile Include="Display.cs" />
     <Compile Include="DisplayEmployee.cs" />
+    <Compile Include="DisplayTask.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Ioptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositryEmployee.cs" />
     <Compile Include="RepositryTasks.cs" />
+    <Compile Include="StatusExtension.cs" />
     <Compile Include="Task.cs" />
   </ItemGroup>
   <ItemGroup>

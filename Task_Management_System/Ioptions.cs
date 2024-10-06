@@ -23,17 +23,19 @@ namespace Task_Management_System
         }
         public Display Options()
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("Enter Your Options : ");
-            Console.WriteLine("1.Employee Department|| 2.Tasks Department");
-            string op = Console.ReadLine();
+             Console.Clear();
+             Console.ForegroundColor = ConsoleColor.DarkCyan;
+             Console.WriteLine("Enter Your Options : ");
+             Console.WriteLine("1.Employee Management || 2.Tasks Management");
+             string op = Console.ReadLine();
             if (op == "1")
             {
                 return new DisplayEmployee();
             }
-            //else if (op == "2")
-            //{
-            //}
+            else if (op == "2")
+            {
+                return new DisplayTask();
+            }
             throw new Exception($"{op} Invalid Answer");
         }
     }

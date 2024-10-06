@@ -11,76 +11,82 @@ namespace Task_Management_System
     {
         public override void display()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("1.Info about Employees\n2.Add employee\n3.Remove Employee\n4.Search about employee");
-            string op = Console.ReadLine();
-            Console.Clear();
-            if (op == "1")
-            {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\t\t\t\t\t┌───────────────────────────────────────────────────────┐");
-                Console.WriteLine("\t\t\t\t\t│              Info about Employee Tasks                │");
-                Console.WriteLine("\t\t\t\t\t└───────────────────────────────────────────────────────┘");
-                foreach (var i in emp.repo._employees)
+            bool continueOperations = true;
+            //while (continueOperations)
+            //{
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("1.Info about Employees\n" +
+                    "2.Add employee\n" +
+                    "3.Remove Employee\n" +
+                    "4.Search about employee\n" +
+                    "5.Exit");
+                string op = Console.ReadLine();
+                Console.Clear();
+                if (op == "1")
                 {
-                    if (task.repo._tasks.ContainsKey(i._ID))
-                        PrintWithTasks(i, task.repo._tasks);
-                    else {
-                        PrintWithoutTasks(i);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\t\t\t\t\t┌───────────────────────────────────────────────────────┐");
+                    Console.WriteLine("\t\t\t\t\t│              Info about Employee Tasks                │");
+                    Console.WriteLine("\t\t\t\t\t└───────────────────────────────────────────────────────┘");
+                    foreach (var i in emp.repo._employees)
+                    {
+                        if (task.repo._tasks.ContainsKey(i._ID))
+                            PrintWithTasks(i, task.repo._tasks);
+                        else {
+                            PrintWithoutTasks(i);
+                        }
                     }
                 }
-            }
-            else if (op == "2")
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Enter Employee Name : ");
-                string name = Console.ReadLine();
-                int newid = emp.repo._employees.Last()._ID;
-                emp.Add_Employee(name,newid+1);
-            }
-            else if (op == "3")
-            {
-                Console.Write("Enter ID : ");
-                int ch = Convert.ToInt32(Console.ReadLine());
-                emp.Remove_Employee(ch);
-            }
-            else if (op == "4")
-            {
-                Console.Write("Enter ID : ");
-                int ch = Convert.ToInt32(Console.ReadLine());
-                var temp = emp.search_employee(ch);
-                Console.Clear();
-                if (temp != null)
+                else if (op == "2")
                 {
-                    if (task.repo._tasks.ContainsKey(temp._ID))
-                        PrintWithTasks(temp, task.repo._tasks);
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write("Enter Employee Name : ");
+                    string name = Console.ReadLine();
+                    int newid = emp.repo._employees.Last()._ID;
+                    emp.Add_Employee(name, newid + 1);
+                }
+                else if (op == "3")
+                {
+                    Console.Write("Enter ID : ");
+                    int ch = Convert.ToInt32(Console.ReadLine());
+                    emp.Remove_Employee(ch);
+                }
+                else if (op == "4")
+                {
+                    Console.Write("Enter ID : ");
+                    int ch = Convert.ToInt32(Console.ReadLine());
+                    var temp = emp.search_employee(ch);
+                    Console.Clear();
+                    if (temp != null)
+                    {
+                        if (task.repo._tasks.ContainsKey(temp._ID))
+                            PrintWithTasks(temp, task.repo._tasks);
+                        else
+                            PrintWithoutTasks(temp);
+                    }
                     else
-                        PrintWithoutTasks(temp);
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Not Founding\n");
+                    }
                 }
-                else
+                else if (op == "5")
                 {
+                    continueOperations = false;
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Not Founding\n");
+                    Console.WriteLine("\nExiting Employee Management. Thank you!\n");
+                    return;
                 }
-            }
-            else Console.WriteLine("Invalid answer");
-            AnotherOperation();
-        }
-        public void AnotherOperation()
-        {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("Are you need any operations ? (yes/no)");
-            string ans = Console.ReadLine();
-            Ioptions opt = Ioptions.GetInstanceoption();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            if (ans.ToLower() == "yes")
-            {
-                Console.Clear();
-                var obj = opt.Options();
-                obj.display();
-            }
-            else Console.WriteLine("Thank You");
+                else Console.WriteLine("Invalid answer");
+                if (continueOperations)
+                {
+                    Console.WriteLine("\nPress Enter key to continue...");
+                    Console.ReadKey();
+                    var temp = Ioptions.InstanceOption.Options();
+                    temp.display();
+                }
+            //}
         }
         public void PrintWithoutTasks(Employee i)
         {
@@ -97,24 +103,16 @@ namespace Task_Management_System
             Console.ForegroundColor = ConsoleColor.White;
             foreach (var T in _task[i._ID])
             {
-                numTask++;
-                T.no_task = numTask;
+                 numTask++;
+                 T.no_task = numTask;
                  Console.ForegroundColor = ConsoleColor.White;
                  Console.WriteLine($"Task number : {T.no_task}" +
                        $"\nTask Title : {T._Title}" +
                        $"\nTask Description : {T._Description}");
                  Console.Write($"Task Status : ");
-                if (T._status == Status.Completed)
-                    Console.ForegroundColor = ConsoleColor.Green;
-                else if (T._status == Status.NotStarted)
-                    Console.ForegroundColor = ConsoleColor.Red;
-                else if (T._status == Status.InProgress)
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                else
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{T._status}");
+                StatusExtensions.PrintColoredStatus(T._status);
                 Console.ForegroundColor = ConsoleColor.White;
-                  Console.WriteLine($"Task Create Date : {T._Created}");
+                  Console.WriteLine($"\nTask Create Date : {T._Created}");
                   Console.ForegroundColor = ConsoleColor.Blue;
                   Console.WriteLine("\t\t─────────────────────────────────────");
             }

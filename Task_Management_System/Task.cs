@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Task_Management_System
 {
-    public enum Status { NotStarted, InProgress, Completed, OnHold }
+    //public enum Status { NotStarted, InProgress, Completed, OnHold }
     public class Task
     {
         public RepositryTasks repo;
@@ -29,7 +29,7 @@ namespace Task_Management_System
             this._Created = DateTime.Now;
             repo = RepositryTasks.GetInstanceRepoTask();
         }
-        public void Assign_Task(int _id, string _title, string _description, Status _status)
+        public void Assign_Task(int _id, string _title, string _description, Status _status = Status.NotStarted)
         {
             var temp  = new Task {_Title = _title,_Description = _description,_status =  _status};
             if (repo._tasks.ContainsKey(_id))
@@ -46,13 +46,27 @@ namespace Task_Management_System
         }
         public void Remove_Task(int _id,int no_task)
         {
-            var temp = repo.LoadTasks()[_id][no_task];
-            repo._tasks[_id].Remove(temp);
+             var temp = repo._tasks[_id][no_task];
+             repo._tasks[_id].Remove(temp);
         }
-        public void UpdateTaskStatus()
+        public bool IsValid(int _id,int no_task)
         {
-
+            if (no_task > repo._tasks[_id].Count)
+            {
+                return false;
+            }
+            else return true;
         }
-
+        public bool HasTask(int _id)
+        {
+            if(repo._tasks.ContainsKey(_id))
+                return true;
+            else return false;
+        }
+        public void UpdateTaskStatus(int _id, int no_task, Status _status)
+        {
+            var temp = repo._tasks[_id][no_task];
+            temp._status = _status;
+        }
     }
 }
