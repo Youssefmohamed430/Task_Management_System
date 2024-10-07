@@ -16,7 +16,8 @@ namespace Task_Management_System
             Console.WriteLine("1.Assign Task To Employee\n" +
                 "2.Remove Task From Employee\n" +
                 "3.Update Task Status \n" +
-                "4.Exit");
+                "4.Filter Tasks Status\n" +
+                "5.Exit");
             string op = Console.ReadLine();
             int iD,NoTask;
             bool y;
@@ -25,6 +26,13 @@ namespace Task_Management_System
                 case "1" :
                     Console.Write("Enter ID : ");
                     iD = Convert.ToInt32(Console.ReadLine());
+                    y = base.task.IsThere(iD);
+                    if (!y)
+                    {
+                        Console.ForegroundColor= ConsoleColor.Red;
+                        Console.WriteLine("\nThis Employee is not There\n");
+                        break;
+                    }
                     Console.Write("Enter Titel Of Task : ");
                     string TiTle = Console.ReadLine();
                     Console.Write("Enter Description Of Task : ");
@@ -34,6 +42,13 @@ namespace Task_Management_System
                 case "2" :
                     Console.Write("Enter ID : ");
                     iD = Convert.ToInt32(Console.ReadLine());
+                    y = base.task.IsThere(iD);
+                    if (!y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThis Employee is not There\n");
+                        break;
+                    }
                     y = base.task.HasTask(iD);
                     if (!y)
                     {
@@ -55,6 +70,13 @@ namespace Task_Management_System
                 case "3":
                     Console.Write("Enter ID : ");
                     iD = Convert.ToInt32(Console.ReadLine());
+                    y = base.task.IsThere(iD);
+                    if (!y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nThis Employee is not There\n");
+                        break;
+                    }
                     y = base.task.HasTask(iD);
                     if (!y)
                     {
@@ -75,6 +97,18 @@ namespace Task_Management_System
                     base.task.UpdateTaskStatus(iD, NoTask-1,x);
                     break;
                 case "4":
+                    Console.Clear();
+                    var Groups = base.task.FilterStatus();
+                    foreach (var Group in Groups) {
+                        string key = Group.Key.ToString();
+                        PrintFormat(key);
+                        foreach (var item in Group) {
+                            var emp1 = base.task.ReturnEmp(item);
+                            PrintTasks(emp1,item);
+                        }
+                    }
+                    break;
+                case "5":
                 continueOperations = false;
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nExiting Employee Management. Thank you!\n");
@@ -90,14 +124,11 @@ namespace Task_Management_System
         }
         public void PrintTasks(Employee i)
         {
-            int numTask = 0;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Name : {i._Name} | ID : {i._ID}");
             Console.ForegroundColor = ConsoleColor.White;
             foreach (var T in  base.task.repo._tasks[i._ID])
             {
-                numTask++;
-                T.no_task = numTask;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Task number : {T.no_task}" +
                       $"\nTask Title : {T._Title}" +
@@ -111,6 +142,30 @@ namespace Task_Management_System
             }
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\t\t\t\t───────────────────────────────────────────────────────");
+        }
+        public void PrintTasks(Employee i,Task T)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Name : {i._Name} | ID : {i._ID}");
+            Console.ForegroundColor = ConsoleColor.White;
+             Console.WriteLine($"Task number : {T.no_task}" +
+                   $"\nTask Title : {T._Title}" +
+                   $"\nTask Description : {T._Description}");
+             Console.Write($"Task Status : ");
+             StatusExtensions.PrintColoredStatus(T._status);
+             Console.ForegroundColor = ConsoleColor.White;
+             Console.WriteLine($"\nTask Create Date : {T._Created}");
+             Console.ForegroundColor = ConsoleColor.Blue;
+             Console.WriteLine("\t\t─────────────────────────────────────");
+        }
+        public void PrintFormat(string key)
+        {
+            int boxWidth = Math.Max(40, key.Length + 10);
+            int padding = (boxWidth - key.Length) / 2;
+            string formattedKey = key.PadLeft(key.Length + padding).PadRight(boxWidth);
+            Console.WriteLine($"\t\t\t\t\t┌{new string('─', boxWidth)}┐");
+            Console.WriteLine($"\t\t\t\t\t│{formattedKey}│");
+            Console.WriteLine($"\t\t\t\t\t└{new string('─', boxWidth)}┘");
         }
     }
 }

@@ -12,8 +12,9 @@ namespace Task_Management_System
         {
             Employee employee = new Employee();
             Task tasks =new Task();
-            tasks.repo.LoadTasks();
             employee.repo.LoadEmployees();
+            tasks.repo.LoadTasks();
+            tasks.repo.IncreaseNumberOfTask();
             Ioptions options = Ioptions.GetInstanceoption();
             var opt = options.Options();
             opt.display();
