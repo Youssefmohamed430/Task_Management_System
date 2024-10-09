@@ -46,11 +46,16 @@ namespace Task_Management_System
         }
         public void Remove_Task(int _id, int no_task)
         {
+            var dec = repo._tasks;
             var temp = repo._tasks[_id][no_task];
             repo._tasks[_id].Remove(temp);
+            foreach (var item in dec[_id])
+            {
+                item.no_task = dec[_id].IndexOf(item) + 1;
+            }
         }
         public bool IsValid(int _id, int no_task)
-            => (no_task > repo._tasks[_id].Count);
+            => (no_task <= repo._tasks[_id].Count);
         public bool HasTask(int _id)
            => repo._tasks.ContainsKey(_id);
         public bool IsThere(int _id)
@@ -95,11 +100,7 @@ namespace Task_Management_System
             var emp1Task = temp[id1][NumTask];
             Assign_Task(id2, emp1Task._Title, emp1Task._Description, emp1Task._status);
             emp1Task.no_task = temp[id2].Count;
-            temp[id1].Remove(emp1Task);
-            foreach (var item in temp[id1])
-            {
-                item.no_task = temp[id1].IndexOf(item) + 1;
-            }
+            Remove_Task(id1,NumTask);
         }
         public Task SearchTask(string TiTlE)
         {

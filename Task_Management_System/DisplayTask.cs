@@ -18,7 +18,7 @@ namespace Task_Management_System
                 "3.Update Task Status \n" +
                 "4.Filter Tasks Status\n" +
                 "5.Replace Task\n" +
-                "6.Serch Task\n" +
+                "6.Search Task\n" +
                 "7.Exit");
             string op = Console.ReadLine();
             string TiTle = "", Descrip= "";
@@ -28,8 +28,9 @@ namespace Task_Management_System
             {
                 case "1" :
                     Continue = true;
+                    Console.Clear();
                     while (Continue)
-                    {
+                    { 
                         Console.Write("Enter ID : ");
                         try { iD = Convert.ToInt32(Console.ReadLine()); }
                         catch (Exception ex)
@@ -76,6 +77,7 @@ namespace Task_Management_System
                     base.task.Assign_Task(iD, TiTle, Descrip);
                     break;
                 case "2" :
+                    Console.Clear();
                     Console.Write("Enter ID : ");
                     try { iD = Convert.ToInt32(Console.ReadLine()); }
                     catch (Exception ex)
@@ -120,6 +122,7 @@ namespace Task_Management_System
                     }
                     break;
                 case "3":
+                    Console.Clear();
                     Console.Write("Enter ID : ");
                     try { iD = Convert.ToInt32(Console.ReadLine()); }
                     catch (Exception ex)
@@ -177,6 +180,7 @@ namespace Task_Management_System
                     }
                     break;
                 case "5":
+                    Console.Clear();
                     Continue = true;
                     int id1=0, id2=0;
                     while(Continue)
@@ -236,7 +240,7 @@ namespace Task_Management_System
                             continue;
                         }
                         y = base.task.IsValid(id1,NoTask);
-                        if (y)
+                        if (!y)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("\nInvalid Answer\n");
@@ -246,6 +250,7 @@ namespace Task_Management_System
                     base.task.ReplaceTask(id1, id2, NoTask-1);
                     break;
                 case "6":
+                    Console.Clear();
                     Continue = true;
                     Task temptask = null;
                     while (Continue)
@@ -265,11 +270,13 @@ namespace Task_Management_System
                     PrintTasks(emp2,temptask);
                     break;
                 case "7":
+                    Console.Clear();
                     continueOperations = false;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nExiting Employee Management. Thank you!\n");
                     return;
                 default:
+                    Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"\n[{op}] Invalid answer");
                     Console.WriteLine("\nPress Enter key to continue...");
