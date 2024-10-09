@@ -50,28 +50,13 @@ namespace Task_Management_System
             repo._tasks[_id].Remove(temp);
         }
         public bool IsValid(int _id, int no_task)
-        {
-            if (no_task > repo._tasks[_id].Count)
-            {
-                return false;
-            }
-            else return true;
-        }
+            => (no_task > repo._tasks[_id].Count);
         public bool HasTask(int _id)
-        {
-            if (repo._tasks.ContainsKey(_id))
-                return true;
-            else return false;
-        }
+           => repo._tasks.ContainsKey(_id);
         public bool IsThere(int _id)
-        {
-            var emp1 = repo.Employees;
-            if(emp1.repo._employees.Contains(emp1.search_employee(_id)))
-            {
-                return true;
-            }
-            else return false;
-        }
+            => repo.Employees.repo._employees.Contains(repo.Employees.search_employee(_id));
+        public bool IsStringValid(string s)
+            => s.All(a => a >= 48 && a <= 57);
         public void UpdateTaskStatus(int _id, int no_task, Status _status)
         {
             var temp = repo._tasks[_id][no_task];
@@ -103,6 +88,30 @@ namespace Task_Management_System
                 }
             }
             throw new NotImplementedException();
+        }
+        public void ReplaceTask(int id1,int id2,int NumTask)
+        {
+            var temp = repo._tasks;
+            var emp1Task = temp[id1][NumTask];
+            Assign_Task(id2, emp1Task._Title, emp1Task._Description, emp1Task._status);
+            emp1Task.no_task = temp[id2].Count;
+            temp[id1].Remove(emp1Task);
+            foreach (var item in temp[id1])
+            {
+                item.no_task = temp[id1].IndexOf(item) + 1;
+            }
+        }
+        public Task SearchTask(string TiTlE)
+        {
+            var temp = repo._tasks;
+            List<Task>element = null;
+            foreach (var item in temp.Values)
+            {
+                element = item.Where(b => b._Title.ToLower() == TiTlE.ToLower()).ToList();
+                if (element.Count > 0) break;
+            }
+            try { return element[0]; }
+            catch { return null; }
         }
     }
 }

@@ -17,31 +17,75 @@ namespace Task_Management_System
                 "2.Remove Task From Employee\n" +
                 "3.Update Task Status \n" +
                 "4.Filter Tasks Status\n" +
-                "5.Exit");
+                "5.Replace Task\n" +
+                "6.Serch Task\n" +
+                "7.Exit");
             string op = Console.ReadLine();
-            int iD,NoTask;
-            bool y;
+            string TiTle = "", Descrip= "";
+            int iD = 0,NoTask = 0;
+            bool y,Continue;
             switch (op)
             {
                 case "1" :
-                    Console.Write("Enter ID : ");
-                    iD = Convert.ToInt32(Console.ReadLine());
-                    y = base.task.IsThere(iD);
-                    if (!y)
+                    Continue = true;
+                    while (Continue)
                     {
-                        Console.ForegroundColor= ConsoleColor.Red;
-                        Console.WriteLine("\nThis Employee is not There\n");
-                        break;
+                        Console.Write("Enter ID : ");
+                        try { iD = Convert.ToInt32(Console.ReadLine()); }
+                        catch (Exception ex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nIs Not Valid\n");
+                            continue;
+                        }
+                        y = base.task.IsThere(iD);
+                        if (!y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis Employee is not There\n");
+                        }
+                        else Continue = false;
                     }
-                    Console.Write("Enter Titel Of Task : ");
-                    string TiTle = Console.ReadLine();
-                    Console.Write("Enter Description Of Task : ");
-                    string Descrip = Console.ReadLine();
+                    Continue = true;
+                    while (Continue)
+                    {
+                        Console.Write("Enter Titel Of Task : ");
+                        TiTle = Console.ReadLine();
+                        y = base.task.IsStringValid(TiTle);
+                        if (y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis is Invalid Title\n");
+                        }
+                        else Continue = false;  
+                    }
+                    Continue = true;
+                    while (Continue)
+                    {
+                        Console.Write("Enter Description Of Task : ");
+                        Descrip = Console.ReadLine();
+                        y = base.task.IsStringValid(Descrip);
+                        if (y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis is Invalid Description\n");
+                            break;
+                        }
+                        else Continue = false;
+                    }
                     base.task.Assign_Task(iD, TiTle, Descrip);
                     break;
                 case "2" :
                     Console.Write("Enter ID : ");
-                    iD = Convert.ToInt32(Console.ReadLine());
+                    try { iD = Convert.ToInt32(Console.ReadLine()); }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
                     y = base.task.IsThere(iD);
                     if (!y)
                     {
@@ -57,7 +101,15 @@ namespace Task_Management_System
                     }
                     PrintTasks(base.emp.search_employee(iD));
                     Console.Write("Enter Number of Task : ");
-                    NoTask = Convert.ToInt32(Console.ReadLine());
+                    try { NoTask = Convert.ToInt32(Console.ReadLine()); }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
                     y = base.task.IsValid(iD,NoTask);
                     if (y)
                         base.task.Remove_Task(iD, NoTask - 1);
@@ -69,7 +121,15 @@ namespace Task_Management_System
                     break;
                 case "3":
                     Console.Write("Enter ID : ");
-                    iD = Convert.ToInt32(Console.ReadLine());
+                    try { iD = Convert.ToInt32(Console.ReadLine()); }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
                     y = base.task.IsThere(iD);
                     if (!y)
                     {
@@ -85,7 +145,15 @@ namespace Task_Management_System
                     }
                     PrintTasks(base.emp.search_employee(iD));
                     Console.Write("Enter Number of Task : ");
-                    NoTask = Convert.ToInt32(Console.ReadLine());
+                    try { NoTask = Convert.ToInt32(Console.ReadLine()); }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
                     y = base.task.IsValid(iD, NoTask);
                     if (!y)
                     {
@@ -109,10 +177,105 @@ namespace Task_Management_System
                     }
                     break;
                 case "5":
-                continueOperations = false;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nExiting Employee Management. Thank you!\n");
-                return;
+                    Continue = true;
+                    int id1=0, id2=0;
+                    while(Continue)
+                    {
+                        Console.WriteLine("Enter ID To first Employee : ");
+                        try { id1 = Convert.ToInt32(Console.ReadLine()); }
+                        catch (Exception ex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nIs Not Valid\n");
+                            continue;
+                        }
+                        y = base.task.IsThere(id1);
+                        if (!y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis Employee is not There\n");
+                            continue ;
+                        }
+                        y = base.task.HasTask(id1);
+                        if(!y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis Employee has not any tasks\n");
+                        }
+                        else Continue = false;
+                    } 
+                    Continue = true;
+                    while(Continue)
+                    {
+                        Console.WriteLine("Enter ID To Second Employee : ");
+                        try { id2 = Convert.ToInt32(Console.ReadLine()); }
+                        catch (Exception ex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nIs Not Valid\n");
+                            continue;
+                        }
+                        y = base.task.IsThere(id2);
+                        if (!y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis Employee is not There\n");
+                        }
+                        else Continue = false;
+                    } 
+                    Continue = true;
+                    while(Continue)
+                    {
+                        PrintTasks(base.emp.search_employee(id1));
+                        Console.WriteLine("Enter Number Of Task : ");
+                        try { NoTask = Convert.ToInt32(Console.ReadLine()); }
+                        catch (Exception ex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nIs Not Valid\n");
+                            continue;
+                        }
+                        y = base.task.IsValid(id1,NoTask);
+                        if (y)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nInvalid Answer\n");
+                        }
+                        else Continue = false;
+                    }
+                    base.task.ReplaceTask(id1, id2, NoTask-1);
+                    break;
+                case "6":
+                    Continue = true;
+                    Task temptask = null;
+                    while (Continue)
+                    {
+                        Console.WriteLine("Enter Title Of Task : ");
+                        TiTle = Console.ReadLine();
+                        temptask = base.task.SearchTask(TiTle);
+                        if (temptask == null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nThis Task Is Not There\n");
+                        }
+                        else Continue = false;
+                    }
+                    var emp2 = base.task.ReturnEmp(temptask);
+                    Console.Clear();
+                    PrintTasks(emp2,temptask);
+                    break;
+                case "7":
+                    continueOperations = false;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nExiting Employee Management. Thank you!\n");
+                    return;
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n[{op}] Invalid answer");
+                    Console.WriteLine("\nPress Enter key to continue...");
+                    Console.ReadKey();
+                    display();
+                    break;
             }
             if (continueOperations)
             {

@@ -11,7 +11,8 @@ namespace Task_Management_System
     {
         public override void display()
         {
-            bool continueOperations = true;
+            bool y = true, continueOperations= true;
+            int ch = 0;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("1.Info about Employees\n" +
@@ -21,62 +22,100 @@ namespace Task_Management_System
                 "5.Exit");
             string op = Console.ReadLine();
             Console.Clear();
-            if (op == "1")
+            switch (op)
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("\t\t\t\t\t┌───────────────────────────────────────────────────────┐");
-                Console.WriteLine("\t\t\t\t\t│              Info about Employee Tasks                │");
-                Console.WriteLine("\t\t\t\t\t└───────────────────────────────────────────────────────┘");
-                foreach (var i in emp.repo._employees)
-                {
-                    if (task.repo._tasks.ContainsKey(i._ID))
-                        PrintWithTasks(i, task.repo._tasks);
-                    else {
-                        PrintWithoutTasks(i);
+                case "1":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\t\t\t\t\t┌───────────────────────────────────────────────────────┐");
+                    Console.WriteLine("\t\t\t\t\t│              Info about Employee Tasks                │");
+                    Console.WriteLine("\t\t\t\t\t└───────────────────────────────────────────────────────┘");
+                    foreach (var i in emp.repo._employees)
+                    {
+                        if (task.repo._tasks.ContainsKey(i._ID))
+                            PrintWithTasks(i, task.repo._tasks);
+                        else
+                        {
+                            PrintWithoutTasks(i);
+                        }
                     }
-                }
-            }
-            else if (op == "2")
-            {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Enter Employee Name : ");
-                string name = Console.ReadLine();
-                int newid = emp.repo._employees.Last()._ID;
-                emp.Add_Employee(name, newid + 1);
-            }
-            else if (op == "3")
-            {
-                Console.Write("Enter ID : ");
-                int ch = Convert.ToInt32(Console.ReadLine());
-                emp.Remove_Employee(ch);
-            }
-            else if (op == "4")
-            {
-                Console.Write("Enter ID : ");
-                int ch = Convert.ToInt32(Console.ReadLine());
-                var temp = emp.search_employee(ch);
-                Console.Clear();
-                if (temp != null)
-                {
-                    if (task.repo._tasks.ContainsKey(temp._ID))
-                        PrintWithTasks(temp, task.repo._tasks);
+                    break;
+                case "2":
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.Write("Enter Employee Name : ");
+                    string name = Console.ReadLine();
+                    y = base.emp.IsValidName(name);
+                    if (y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"\n[{name}] Is Not Valid\n");
+                        Console.WriteLine("\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
+                    int newid = emp.repo._employees.Last()._ID;
+                    emp.Add_Employee(name, newid + 1);
+                    break;
+                case "3":
+                    Console.Write("Enter ID : ");
+                    try { ch = Convert.ToInt32(Console.ReadLine()); }
+                    catch(Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
+                    y = base.emp.IsEmp(ch);
+                    if(!y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
+                    emp.Remove_Employee(ch);
+                    break;
+                case "4":
+                    Console.Write("Enter ID : ");
+                    try { ch = Convert.ToInt32(Console.ReadLine()); }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nIs Not Valid\n" +
+                            "\nPress Enter key to continue...");
+                        Console.ReadKey();
+                        display();
+                    }
+                    var temp = emp.search_employee(ch);
+                    Console.Clear();
+                    if (temp != null)
+                    {
+                        if (task.repo._tasks.ContainsKey(temp._ID))
+                            PrintWithTasks(temp, task.repo._tasks);
+                        else
+                            PrintWithoutTasks(temp);
+                    }
                     else
-                        PrintWithoutTasks(temp);
-                }
-                else
-                {
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Not Founding\n");
+                    }
+                    break;
+                case "5":
+                    continueOperations = false;
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Not Founding\n");
-                }
+                    Console.WriteLine("\nExiting Employee Management. Thank you!\n");
+                    return;
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n[{op}] Invalid answer");
+                    Console.WriteLine("\nPress Enter key to continue...");
+                    Console.ReadKey();
+                    display();
+                    break;
             }
-            else if (op == "5")
-            {
-                continueOperations = false;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nExiting Employee Management. Thank you!\n");
-                return;
-            }
-            else Console.WriteLine("Invalid answer");
             if (continueOperations)
             {
                 Console.WriteLine("\nPress Enter key to continue...");
